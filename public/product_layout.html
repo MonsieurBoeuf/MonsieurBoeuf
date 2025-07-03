@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monsieur Boeuf Ceramics</title>
+
+  <!-- Fonts and Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Playfair+Display:wght@600&family=Tenor+Sans&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Tenor Sans', sans-serif;
+    }
+
+    /* Navbar Styling */
+    .navbar {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      padding: 1.5rem 2rem;
+      background-color: transparent;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      z-index: 1000;
+      color: white;
+    }
+
+    .navbar-inner {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: bold;
+      white-space: nowrap;
+      z-index: 2;
+      color: white;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      margin-left: auto;
+      cursor: pointer;
+      z-index: 2;
+      color: white;
+    }
+
+    .desktop-nav {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-menu li {
+      position: relative;
+    }
+
+    .nav-menu a {
+      text-decoration: none;
+      color: white;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+
+    .nav-menu a:hover {
+      color: #444;
+    }
+
+    .navbar.scrolled,
+    .navbar:hover {
+      background-color: #c0d3cc;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      color: black;
+    }
+
+    .navbar.scrolled .nav-menu a,
+    .navbar:hover .nav-menu a,
+    .navbar.scrolled .brand,
+    .navbar:hover .brand,
+    .navbar.scrolled .menu-toggle,
+    .navbar:hover .menu-toggle {
+      color: black;
+    }
+
+    /* Dropdown Menu Styling */
+    .dropdown-menu {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transition: max-height 0.4s ease, opacity 0.4s ease, visibility 0.4s ease;
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      list-style: none;
+      padding: 0 1rem;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .dropdown:hover .dropdown-menu {
+      max-height: 500px;
+      opacity: 1;
+      visibility: visible;
+      padding: 0.5rem 1rem;
+    }
+
+    .dropdown-menu li {
+      padding: 0.3rem 0;
+    }
+
+    .dropdown-menu a {
+      font-size: 0.85rem;
+      color: #333;
+    }
+
+    .hero {
+      background-size: cover;
+      background-position: center;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .hero-logo {
+      width: 400px; /* Adjust size as needed */
+      margin: 0 auto 1rem auto;
+      display: block;
+    }
+
+    .hero-text {
+      background: none !important;
+      padding: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .hero-text h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 1.5rem;
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+      margin-bottom: 1rem;
+    }
+
+    .hero-text p {
+      font-size: 0.85rem;
+      color: white;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.5;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .desktop-nav {
+        position: static;
+        transform: none;
+        width: 100%;
+      }
+
+      .nav-menu {
+        flex-direction: column;
+        align-items: flex-start;
+        background-color: #c0d3cc;
+        padding-top: 1rem;
+        display: none;
+        width: 100%;
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+
+      .dropdown-menu {
+        position: static;
+        transform: none;
+        background-color: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(6px);
+        border-radius: 0;
+        box-shadow: none;
+        opacity: 1;
+        visibility: visible;
+        max-height: none;
+        padding: 0.5rem 1rem;
+      }
+
+      .dropdown:hover .dropdown-menu {
+        display: none;
+      }
+
+      .dropdown.open .dropdown-menu {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <div class="brand">Monsieur Boeuf</div>
+      <div class="menu-toggle" id="mobile-menu">&#9776;</div>
+      <nav class="desktop-nav">
+        <ul class="nav-menu" id="nav">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Gallery</a></li>
+          <li class="dropdown">
+            <a href="#">Decor</a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Vases</a></li>
+              <li><a href="#">Wall Pieces</a></li>
+              <li><a href="#">Tableware</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#">Wellness</a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Candles</a></li>
+              <li><a href="#">Essential Oils</a></li>
+              <li><a href="#">Incense Holders</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#">Function</a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Mugs</a></li>
+              <li><a href="#">Plates</a></li>
+              <li><a href="#">Storage</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="hero">
+    <div class="hero-text">
+      <img src="assets/MB-Logo2.png" alt="Monsieur Boeuf Logo" class="hero-logo" />
+      <h1>HANDMADE POTTERY</h1>
+      <p>Each piece is meticulously handcrafted, ensuring every creation is a singular work of art. I invite you to place your order and support local craftsmanship. Kindly allow 5–7 business days for processing.</p>
+    </div>
+  </section>
+
+  <!-- Toolbar -->
+  <div class="toolbar" style="padding: 1rem 2rem;">
+    <span>100 Products</span>
+    <select>
+      <option>Sort by</option>
+      <option>Price: Low to High</option>
+      <option>Price: High to Low</option>
+      <option>Newest</option>
+    </select>
+  </div>
+
+  <!-- Product Grid -->
+  <section class="product-grid">
+    <div class="product-card">
+      <img src="assets/Product2.jpg" alt="Product 1" />
+      <p>Decor</p>
+    </div>
+    <div class="product-card">
+      <img src="assets/Product3.jpg" alt="Product 2" />
+      <p>Wellness</p>
+    </div>
+    <div class="product-card">
+      <img src="assets/Product1.jpg" alt="Product 3" />
+      <p>Function</p>
+    </div>
+  </section>
+
+  <!-- Mobile Menu Script -->
+  <script>
+    const menuToggle = document.getElementById('mobile-menu');
+    const navMenu = document.getElementById('nav');
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+    });
+
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 10) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
